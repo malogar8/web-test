@@ -65,11 +65,21 @@ function analizarCSV(texto) {
 }
 
 function formatearFecha(fecha) {
-  const partes = fecha.split("-");
+  if (!fecha) {
+    return "";
+  }
+
+  const fechaLimpia = fecha.split("T")[0];
+  const partes = fechaLimpia.split("-");
 
   if (partes.length !== 3) {
     return fecha;
   }
+
+  const [año, mes, dia] = partes;
+
+  return `${dia}-${mes}-${año.slice(-2)}`;
+}
 
   const [año, mes, dia] = partes;
   return `${dia}/${mes}/${año}`;
