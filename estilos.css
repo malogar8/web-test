@@ -1,11 +1,25 @@
 :root {
   color-scheme: light;
+
   --fondo: #f3f4f6;
   --tarjeta: #ffffff;
   --texto: #111827;
   --texto-secundario: #6b7280;
   --borde: #e5e7eb;
   --acento: #2563eb;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+
+    --fondo: #111827;
+    --tarjeta: #1f2937;
+    --texto: #f9fafb;
+    --texto-secundario: #9ca3af;
+    --borde: #374151;
+    --acento: #60a5fa;
+  }
 }
 
 * {
@@ -120,5 +134,15 @@ h1 {
 @media (min-width: 600px) {
   .contenedor {
     padding-top: 48px;
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  .tarjeta {
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  }
+
+  .busqueda input {
+    background: var(--tarjeta);
   }
 }
