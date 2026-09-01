@@ -113,9 +113,11 @@ function mostrarPeliculas() {
 
     tarjeta.innerHTML = `
       <h2>${escaparHTML(pelicula.titulo)}</h2>
-      <div class="fecha">${escaparHTML(
-        formatearFecha(pelicula.fecha_vista)
-      )}</div>
+  <div class="fecha">
+    vista el: ${escaparHTML(
+      formatearFecha(pelicula.fecha_vista)
+    )}
+  </div>
       <p class="valoracion">${escaparHTML(
         pelicula.valoracion
       )}</p>
