@@ -81,9 +81,6 @@ function formatearFecha(fecha) {
   return `${dia}-${mes}-${año.slice(-2)}`;
 }
 
-  const [año, mes, dia] = partes;
-  return `${dia}/${mes}/${año}`;
-}
 
 function escaparHTML(texto) {
   return String(texto)
