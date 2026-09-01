@@ -121,14 +121,18 @@ function mostrarPeliculas() {
 }
 
 async function cargarPeliculas() {
+  const urlCSV =
+    "https://docs.google.com/spreadsheets/d/e/2PACX-1vSLY91PpxNSdyt9YrCe3YubDHAUMnd9BQU5mXyRbEVBQoUSFlwhY_GTeuw9P3qlnGlullNnk9SHXz1x/pub?gid=944418103&single=true&output=csv";
+
   try {
-    const respuesta = await fetch("peliculas.csv");
+    const respuesta = await fetch(urlCSV);
 
     if (!respuesta.ok) {
-      throw new Error("No se pudo cargar el CSV");
+      throw new Error("No se pudo cargar la hoja de cálculo");
     }
 
     const texto = await respuesta.text();
+
     peliculas = analizarCSV(texto);
     mostrarPeliculas();
   } catch (error) {
@@ -136,6 +140,7 @@ async function cargarPeliculas() {
     console.error(error);
   }
 }
+
 
 buscar.addEventListener("input", mostrarPeliculas);
 cargarPeliculas();
