@@ -1,0 +1,124 @@
+:root {
+  color-scheme: light;
+  --fondo: #f3f4f6;
+  --tarjeta: #ffffff;
+  --texto: #111827;
+  --texto-secundario: #6b7280;
+  --borde: #e5e7eb;
+  --acento: #2563eb;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  background: var(--fondo);
+  color: var(--texto);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.contenedor {
+  width: min(100% - 32px, 720px);
+  margin: 0 auto;
+  padding: 24px 0 40px;
+}
+
+.cabecera {
+  margin-bottom: 20px;
+}
+
+h1 {
+  margin: 0 0 4px;
+  font-size: 2rem;
+}
+
+#contador {
+  margin: 0;
+  color: var(--texto-secundario);
+  font-size: 0.95rem;
+}
+
+.busqueda {
+  display: block;
+  margin-bottom: 24px;
+}
+
+.busqueda input {
+  width: 100%;
+  min-height: 52px;
+  padding: 0 16px;
+  border: 1px solid var(--borde);
+  border-radius: 14px;
+  background: var(--tarjeta);
+  color: var(--texto);
+  font: inherit;
+  font-size: 1rem;
+  outline: none;
+}
+
+.busqueda input:focus {
+  border-color: var(--acento);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.15);
+}
+
+.lista {
+  display: grid;
+  gap: 14px;
+}
+
+.tarjeta {
+  padding: 18px;
+  border: 1px solid var(--borde);
+  border-radius: 16px;
+  background: var(--tarjeta);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.04);
+}
+
+.tarjeta h2 {
+  margin: 0 0 6px;
+  font-size: 1.2rem;
+  line-height: 1.3;
+}
+
+.fecha {
+  margin-bottom: 12px;
+  color: var(--texto-secundario);
+  font-size: 0.9rem;
+}
+
+.valoracion {
+  margin: 0;
+  line-height: 1.5;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.sin-resultados {
+  padding: 24px;
+  text-align: center;
+  color: var(--texto-secundario);
+}
+
+.oculto {
+  display: none;
+}
+
+.texto-oculto {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (min-width: 600px) {
+  .contenedor {
+    padding-top: 48px;
+  }
+}
