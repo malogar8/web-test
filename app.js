@@ -122,7 +122,7 @@ function mostrarPeliculas() {
 
 async function cargarPeliculas() {
   try {
-    const respuesta = await fetch("pelis-mabel.csv");
+    const respuesta = await fetch("peliculas.csv");
 
     if (!respuesta.ok) {
       throw new Error("No se pudo cargar el CSV");
