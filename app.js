@@ -23,12 +23,16 @@ function analizarCSV(texto) {
     } else if (caracter === "," && !dentroDeComillas) {
       fila.push(campo);
       campo = "";
-    } else if ((caracter === "\n" || caracter === "\r") && !dentroDeComillas) {
+    } else if (
+      (caracter === "\n" || caracter === "\r") &&
+      !dentroDeComillas
+    ) {
       if (caracter === "\r" && siguiente === "\n") {
         i++;
       }
 
       fila.push(campo);
+
       if (fila.some(valor => valor.trim() !== "")) {
         filas.push(fila);
       }
@@ -42,22 +46,28 @@ function analizarCSV(texto) {
 
   if (campo !== "" || fila.length > 0) {
     fila.push(campo);
-    filas.push(fila);
+
+    if (fila.some(valor => valor.trim() !== "")) {
+      filas.push(fila);
+    }
   }
 
-  if (filas.length === 0) {
+  if (filas.length < 2) {
     return [];
   }
 
   const cabeceras = filas[0].map(cabecera =>
-    cabecera.trim().toLowerCase()
+    cabecera
+      .replace(/^\uFEFF/, "")
+      .trim()
+      .toLowerCase()
   );
 
-  return filas.slice(1).map(fila => {
+  return filas.slice(1).map(valores => {
     const pelicula = {};
 
     cabeceras.forEach((cabecera, indice) => {
-      pelicula[cabecera] = (fila[indice] || "").trim();
+      pelicula[cabecera] = (valores[indice] || "").trim();
     });
 
     return pelicula;
@@ -81,14 +91,11 @@ function formatearFecha(fecha) {
   return `${dia}-${mes}-${año.slice(-2)}`;
 }
 
-
 function escaparHTML(texto) {
-  return String(texto)
-    .replaceAll("&", "&amp;")
-    .replaceAll("<", "&lt;")
-    .replaceAll(">", "&gt;")
-    .replaceAll('"', "&quot;")
-    .replaceAll("'", "&#039;");
+  const elemento = document.createElement("div");
+  elemento.textContent = texto ?? "";
+
+  return elemento.innerHTML;
 }
 
 function mostrarPeliculas() {
@@ -96,10 +103,14 @@ function mostrarPeliculas() {
 
   const filtradas = peliculas
     .filter(pelicula =>
-      pelicula.titulo.toLocaleLowerCase().includes(termino)
+      (pelicula.titulo || "")
+        .toLocaleLowerCase()
+        .includes(termino)
     )
     .sort((a, b) =>
-      b.fecha_vista.localeCompare(a.fecha_vista)
+      (b.fecha_vista || "").localeCompare(
+        a.fecha_vista || ""
+      )
     );
 
   lista.innerHTML = "";
@@ -109,14 +120,18 @@ function mostrarPeliculas() {
     tarjeta.className = "tarjeta";
 
     tarjeta.innerHTML = `
-      <h2>${escaparHTML(pelicula.titulo)}</h2>
-  <div class="fecha">
-    vista el: ${escaparHTML(
-      formatearFecha(pelicula.fecha_vista)
-    )}
-  </div>
+      <h2>${escaparHTML(
+        pelicula.titulo || ""
+      )}</h2>
+
+      <div class="fecha">
+        vista el: ${escaparHTML(
+          formatearFecha(pelicula.fecha_vista)
+        )}
+      </div>
+
       <p class="valoracion">${escaparHTML(
-        pelicula.valoracion
+        pelicula.valoracion || ""
       )}</p>
     `;
 
@@ -124,9 +139,14 @@ function mostrarPeliculas() {
   });
 
   contador.textContent =
-    `${filtradas.length} película${filtradas.length === 1 ? "" : "s"}`;
+    `${filtradas.length} película${
+      filtradas.length === 1 ? "" : "s"
+    }`;
 
-  sinResultados.classList.toggle("oculto", filtradas.length !== 0);
+  sinResultados.classList.toggle(
+    "oculto",
+    filtradas.length !== 0
+  );
 }
 
 async function cargarPeliculas() {
@@ -137,7 +157,9 @@ async function cargarPeliculas() {
     const respuesta = await fetch(urlCSV);
 
     if (!respuesta.ok) {
-      throw new Error("No se pudo cargar la hoja de cálculo");
+      throw new Error(
+        "No se pudo cargar la hoja de cálculo"
+      );
     }
 
     const texto = await respuesta.text();
@@ -145,11 +167,14 @@ async function cargarPeliculas() {
     peliculas = analizarCSV(texto);
     mostrarPeliculas();
   } catch (error) {
-    contador.textContent = "Error al cargar las películas";
+    contador.textContent =
+      "Error al cargar las películas";
+
+    sinResultados.classList.remove("oculto");
     console.error(error);
   }
 }
 
-
 buscar.addEventListener("input", mostrarPeliculas);
+
 cargarPeliculas();
