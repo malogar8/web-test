@@ -116,23 +116,26 @@ function mostrarPeliculas() {
   lista.innerHTML = "";
 
   filtradas.forEach(pelicula => {
-    const tarjeta = document.createElement("article");
+    const titulo = escaparHTML(pelicula.titulo || "");
+    const año = escaparHTML(pelicula.año_pelicula || "");
+    const fechaVista = escaparHTML(
+      formatearFecha(pelicula.fecha_vista)
+    );
+    const valoracion = escaparHTML(
+      pelicula.valoracion || ""
+    );
+
+    tarjeta = document.createElement("article");
     tarjeta.className = "tarjeta";
 
     tarjeta.innerHTML = `
-      <h2>${escaparHTML(
-        pelicula.titulo || ""
-      )}</h2>
+      <h2>${titulo}${año ? ` (${año})` : ""}</h2>
 
       <div class="fecha">
-        vista el: ${escaparHTML(
-          formatearFecha(pelicula.fecha_vista)
-        )}
+        vista el: ${fechaVista}
       </div>
 
-      <p class="valoracion">${escaparHTML(
-        pelicula.valoracion || ""
-      )}</p>
+      <p class="valoracion">${valoracion}</p>
     `;
 
     lista.appendChild(tarjeta);
