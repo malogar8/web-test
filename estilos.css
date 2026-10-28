@@ -193,16 +193,18 @@ h1 {
   color: var(--texto);
   font-size: 1.2rem;
 }
-/* Estilo para las palabras encontradas en el buscador */
+/* Estilo para las palabras encontradas en el buscador con fondo amarillo */
 mark.resaltado {
-  background-color: rgba(37, 99, 235, 0.2); /* Usa un tono basado en tu color acento */
-  color: inherit;
-  padding: 0 2px;
+  background-color: #fde047; /* Amarillo vivo y limpio para el modo claro */
+  color: #111827;            /* Texto oscuro para un contraste perfecto sobre amarillo */
+  padding: 0 3px;
   border-radius: 4px;
+  font-weight: 500;
 }
 
 @media (prefers-color-scheme: dark) {
   mark.resaltado {
-    background-color: rgba(96, 165, 250, 0.3); /* Adaptado para el modo oscuro */
+    background-color: #facc15; /* Amarillo brillante adaptado para el modo oscuro */
+    color: #111827;            /* Mantiene el texto oscuro para máxima legibilidad */
   }
 }
