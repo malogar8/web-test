@@ -159,7 +159,7 @@ h1 {
   display: flex;
   gap: 16px;
   margin-top: 8px;
-  margin-bottom: 4px;
+  margin-bottom: 8px;
 }
 
 .btn-pestana {
@@ -169,7 +169,7 @@ h1 {
   margin: 0;
   color: var(--texto-secundario);
   font: inherit;
-  font-size: 1.1rem;
+  font-size: 2rem;
   font-weight: 500;
   cursor: pointer;
   transition: color 0.2s ease;
@@ -190,6 +190,6 @@ h1 {
 /* Estilo para el autor en las tarjetas de lectura */
 .autor {
   margin: 0 0 8px;
-  color: var(--acento);
+  color: var(--texto);
   font-size: 1.2rem;
 }
