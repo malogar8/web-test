@@ -8,7 +8,7 @@ const btnLecturas = document.querySelector("#btn-lecturas");
 // URLs de tus Google Sheets en formato CSV
 const URL_PELICULAS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSLY91PpxNSdyt9YrCe3YubDHAUMnd9BQU5mXyRbEVBQoUSFlwhY_GTeuw9P3qlnGlullNnk9SHXz1x/pub?gid=944418103&single=true&output=csv";
 ";
-const URL_LECTURAS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSLY91PpxNSdyt9YrCe3YubDHAUMnd9BQU5mXyRbEVBQoUSFlwhY_GTeuw9P3qlnGlullNnk9SHXz1x/pub?gid=944418103&single=true&output=csv";
+const URL_LECTURAS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vQl_c4q08BpWYHd9LEp17XYSSepdT1jyvXsKRCTVtWZY2jvU2addCD41lnz1NAvZoDBJ7aQqZAshKnL/pub?gid=944418103&single=true&output=csv";
 ";
 
 let peliculas = [];
