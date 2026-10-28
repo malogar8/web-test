@@ -60,6 +60,22 @@ function analizarCSV(texto) {
   });
 }
 
+function formatearFecha(fecha) {
+  if (!fecha) {
+    return "";
+  }
+
+  const fechaLimpia = fecha.split("T")[0];
+  const partes = fechaLimpia.split("-");
+
+  if (partes.length !== 3) {
+    return fecha;
+  }
+
+  const [año, mes, dia] = partes;
+  return `${dia}-${mes}-${año.slice(-2)}`;
+}
+
 function escaparHTML(texto) {
   const elemento = document.createElement("div");
   elemento.textContent = texto ?? "";
@@ -109,11 +125,6 @@ function mostrarDatos() {
 
     lista.appendChild(tarjeta);
   });
-
-  const nombreEntidad = vistaActual === "peliculas" ? "película" : "libro";
-  contador.textContent = `${filtradas.length} ${nombreEntidad}${filtradas.length === 1 ? "" : "s"}`;
-  sinResultados.classList.toggle("oculto", filtradas.length !== 0);
-}
 
   const nombreEntidad = vistaActual === "peliculas" ? "película" : "libro";
   contador.textContent = `${filtradas.length} ${nombreEntidad}${filtradas.length === 1 ? "" : "s"}`;
