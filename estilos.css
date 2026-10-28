@@ -154,34 +154,37 @@ h1 {
   margin-bottom: 24px;
 }
 
+/* Estilo minimalista de texto para las pestañas */
 .pestanas {
   display: flex;
-  gap: 8px;
-  margin-top: 12px;
+  gap: 16px;
+  margin-top: 8px;
+  margin-bottom: 4px;
 }
 
 .btn-pestana {
-  padding: 8px 16px;
-  border: 1px solid var(--borde);
-  border-radius: 10px;
-  background: var(--tarjeta);
+  background: none;
+  border: none;
+  padding: 0;
+  margin: 0;
   color: var(--texto-secundario);
   font: inherit;
-  font-size: 0.95rem;
+  font-size: 1.1rem;
   font-weight: 500;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: color 0.2s ease;
 }
 
 .btn-pestana:hover {
-  border-color: var(--acento);
   color: var(--texto);
 }
 
 .btn-pestana.activa {
-  background: var(--acento);
-  border-color: var(--acento);
-  color: #ffffff;
+  color: var(--texto);
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 6px;
+  text-decoration-color: var(--acento);
 }
 
 /* Estilo para el autor en las tarjetas de lectura */
