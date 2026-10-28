@@ -110,13 +110,10 @@ function mostrarDatos() {
   lista.innerHTML = "";
 
   filtradas.forEach(item => {
-    if (vistaActual === "lecturas") {
-      console.log("Objeto libro completo:", item);
-      console.log("Valor de autor_lectura:", item.autor_lectura);
-    }
-    const titulo = escaparHTML(item.titulo || "");
+    const termino = buscar.value.trim();
+    const titulo = resaltarTexto(item.titulo || "", termino);
     const año = escaparHTML(item.año || "");
-    const valoracion = escaparHTML(item.valoracion || "");
+    const valoracion = resaltarTexto(item.valoracion || "", termino);
     
     const tarjeta = document.createElement("article");
     tarjeta.className = "tarjeta";
@@ -125,15 +122,15 @@ function mostrarDatos() {
       const fechaVista = escaparHTML(formatearFecha(item.fecha_vista));
       tarjeta.innerHTML = `
         <h2>${titulo}${año ? ` (${año})` : ""}</h2>
-        ${fechaVista ? `<div class="fecha">fecha reseña: ${fechaVista}</div>` : ""}
+        ${fechaVista ? `<div class="fecha">vista el: ${fechaVista}</div>` : ""}
         <p class="valoracion">${valoracion}</p>
       `;
     } else {
-      const autor = escaparHTML(item.autor_lectura || "");
+      const autor = resaltarTexto(item.autor_lectura || "", termino);
       const fechaLectura = escaparHTML(formatearFecha(item.fecha_lectura));
       tarjeta.innerHTML = `
         <h2>${titulo}${año ? ` (${año})` : ""}</h2>
-        ${autor ? `<p class="autor">${autor}</p>` : ""}
+        ${autor ? `<p class="autor">Autor: ${autor}</p>` : ""}
         ${fechaLectura ? `<div class="fecha">fecha reseña: ${fechaLectura}</div>` : ""}
         <p class="valoracion">${valoracion}</p>
       `;
