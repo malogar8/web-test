@@ -125,7 +125,7 @@ function mostrarPeliculas() {
       pelicula.valoracion || ""
     );
 
-    tarjeta = document.createElement("article");
+    const tarjeta = document.createElement("article");
     tarjeta.className = "tarjeta";
 
     tarjeta.innerHTML = `
