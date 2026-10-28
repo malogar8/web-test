@@ -190,3 +190,14 @@ btnLecturas.addEventListener("click", () => {
 buscar.addEventListener("input", mostrarDatos);
 
 cargarDatos();
+// resaltar text buscado
+function resaltarTexto(texto, termino) {
+  if (!termino) return escaparHTML(texto);
+  
+  const textoEscapado = escaparHTML(texto);
+  const terminoEscapado = escaparHTML(termino);
+  
+  // Expresión regular para encontrar el término sin importar mayúsculas/minúsculas
+  const regex = new RegExp(`(${terminoEscapado})`, "gi");
+  return textoEscapado.replace(regex, '<mark class="resaltado">$1</mark>');
+}
