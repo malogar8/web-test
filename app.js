@@ -2,8 +2,18 @@ const lista = document.querySelector("#peliculas");
 const buscar = document.querySelector("#buscar");
 const contador = document.querySelector("#contador");
 const sinResultados = document.querySelector("#sin-resultados");
+const btnPeliculas = document.querySelector("#btn-peliculas");
+const btnLecturas = document.querySelector("#btn-lecturas");
+
+// URLs de tus Google Sheets en formato CSV
+const URL_PELICULAS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSLY91PpxNSdyt9YrCe3YubDHAUMnd9BQU5mXyRbEVBQoUSFlwhY_GTeuw9P3qlnGlullNnk9SHXz1x/pub?gid=944418103&single=true&output=csv";
+";
+const URL_LECTURAS = "https://docs.google.com/spreadsheets/d/e/2PACX-1vSLY91PpxNSdyt9YrCe3YubDHAUMnd9BQU5mXyRbEVBQoUSFlwhY_GTeuw9P3qlnGlullNnk9SHXz1x/pub?gid=944418103&single=true&output=csv";
+";
 
 let peliculas = [];
+let lecturas = [];
+let vistaActual = "peliculas"; // 'peliculas' o 'lecturas'
 
 function analizarCSV(texto) {
   const filas = [];
@@ -23,20 +33,10 @@ function analizarCSV(texto) {
     } else if (caracter === "," && !dentroDeComillas) {
       fila.push(campo);
       campo = "";
-    } else if (
-      (caracter === "\n" || caracter === "\r") &&
-      !dentroDeComillas
-    ) {
-      if (caracter === "\r" && siguiente === "\n") {
-        i++;
-      }
-
+    } else if ((caracter === "\n" || caracter === "\r") && !dentroDeComillas) {
+      if (caracter === "\r" && siguiente === "\n") i++;
       fila.push(campo);
-
-      if (fila.some(valor => valor.trim() !== "")) {
-        filas.push(fila);
-      }
-
+      if (fila.some(valor => valor.trim() !== "")) filas.push(fila);
       fila = [];
       campo = "";
     } else {
@@ -46,138 +46,107 @@ function analizarCSV(texto) {
 
   if (campo !== "" || fila.length > 0) {
     fila.push(campo);
-
-    if (fila.some(valor => valor.trim() !== "")) {
-      filas.push(fila);
-    }
+    if (fila.some(valor => valor.trim() !== "")) filas.push(fila);
   }
 
-  if (filas.length < 2) {
-    return [];
-  }
+  if (filas.length < 2) return [];
 
-  const cabeceras = filas[0].map(cabecera =>
-    cabecera
-      .replace(/^\uFEFF/, "")
-      .trim()
-      .toLowerCase()
-  );
+  const cabeceras = filas[0].map(c => c.replace(/^\uFEFF/, "").trim().toLowerCase());
 
   return filas.slice(1).map(valores => {
-    const pelicula = {};
-
+    const objeto = {};
     cabeceras.forEach((cabecera, indice) => {
-      pelicula[cabecera] = (valores[indice] || "").trim();
+      objeto[cabecera] = (valores[indice] || "").trim();
     });
-
-    return pelicula;
+    return objeto;
   });
-}
-
-function formatearFecha(fecha) {
-  if (!fecha) {
-    return "";
-  }
-
-  const fechaLimpia = fecha.split("T")[0];
-  const partes = fechaLimpia.split("-");
-
-  if (partes.length !== 3) {
-    return fecha;
-  }
-
-  const [año, mes, dia] = partes;
-
-  return `${dia}-${mes}-${año.slice(-2)}`;
 }
 
 function escaparHTML(texto) {
   const elemento = document.createElement("div");
   elemento.textContent = texto ?? "";
-
   return elemento.innerHTML;
 }
 
-function mostrarPeliculas() {
+function mostrarDatos() {
   const termino = buscar.value.trim().toLocaleLowerCase();
+  const datos = vistaActual === "peliculas" ? peliculas : lecturas;
 
-  const filtradas = peliculas
-    .filter(pelicula =>
-      (pelicula.titulo || "")
-        .toLocaleLowerCase()
-        .includes(termino)
-    )
-    .sort((a, b) =>
-      (b.fecha_vista || "").localeCompare(
-        a.fecha_vista || ""
-      )
-    );
+  const filtradas = datos
+    .filter(item => (item.titulo || "").toLocaleLowerCase().includes(termino))
+    .sort((a, b) => (b.fecha || "").localeCompare(a.fecha || ""));
 
   lista.innerHTML = "";
 
-  filtradas.forEach(pelicula => {
-    const titulo = escaparHTML(pelicula.titulo || "");
-    const año = escaparHTML(pelicula.año_pelicula || "");
-    const fechaVista = escaparHTML(
-      formatearFecha(pelicula.fecha_vista)
-    );
-    const valoracion = escaparHTML(
-      pelicula.valoracion || ""
-    );
-
+  filtradas.forEach(item => {
+    const titulo = escaparHTML(item.titulo || "");
+    const valoracion = escaparHTML(item.valoracion || "");
     const tarjeta = document.createElement("article");
     tarjeta.className = "tarjeta";
 
-    tarjeta.innerHTML = `
-      <h2>${titulo}${año ? ` (${año})` : ""}</h2>
-
-      <div class="fecha">
-        vista el: ${fechaVista}
-      </div>
-
-      <p class="valoracion">${valoracion}</p>
-    `;
+    if (vistaActual === "peliculas") {
+      const año = escaparHTML(item.año_pelicula || "");
+      tarjeta.innerHTML = `
+        <h2>${titulo}${año ? ` (${año})` : ""}</h2>
+        <p class="valoracion">${valoracion}</p>
+      `;
+    } else {
+      const autor = escaparHTML(item.autor || "");
+      tarjeta.innerHTML = `
+        <h2>${titulo}</h2>
+        ${autor ? `<p class="autor">Autor: ${autor}</p>` : ""}
+        <p class="valoracion">${valoracion}</p>
+      `;
+    }
 
     lista.appendChild(tarjeta);
   });
 
-  contador.textContent =
-    `${filtradas.length} película${
-      filtradas.length === 1 ? "" : "s"
-    }`;
-
-  sinResultados.classList.toggle(
-    "oculto",
-    filtradas.length !== 0
-  );
+  const nombreEntidad = vistaActual === "peliculas" ? "película" : "libro";
+  contador.textContent = `${filtradas.length} ${nombreEntidad}${filtradas.length === 1 ? "" : "s"}`;
+  sinResultados.classList.toggle("oculto", filtradas.length !== 0);
 }
 
-async function cargarPeliculas() {
-  const urlCSV =
-    "https://docs.google.com/spreadsheets/d/e/2PACX-1vSLY91PpxNSdyt9YrCe3YubDHAUMnd9BQU5mXyRbEVBQoUSFlwhY_GTeuw9P3qlnGlullNnk9SHXz1x/pub?gid=944418103&single=true&output=csv";
-
+async function cargarDatos() {
   try {
-    const respuesta = await fetch(urlCSV);
+    const [resPelis, resLecturas] = await Promise.all([
+      fetch(URL_PELICULAS),
+      fetch(URL_LECTURAS)
+    ]);
 
-    if (!respuesta.ok) {
-      throw new Error(
-        "No se pudo cargar la hoja de cálculo"
-      );
-    }
+    if (!resPelis.ok || !resLecturas.ok) throw new Error("Error al cargar los datos");
 
-    const texto = await respuesta.text();
+    const textoPelis = await resPelis.text();
+    const textoLecturas = await resLecturas.text();
 
-    peliculas = analizarCSV(texto);
-    mostrarPeliculas();
+    peliculas = analizarCSV(textoPelis);
+    lecturas = analizarCSV(textoLecturas);
+
+    mostrarDatos();
   } catch (error) {
-    contador.textContent =
-      "Error al cargar las películas";
-
+    contador.textContent = "Error al cargar el contenido";
     sinResultados.classList.remove("oculto");
     console.error(error);
   }
 }
 
-buscar.addEventListener("input", mostrarPeliculas);
+// Eventos de cambio de pestaña
+btnPeliculas.addEventListener("click", () => {
+  vistaActual = "peliculas";
+  btnPeliculas.classList.add("activa");
+  btnLecturas.classList.remove("activa");
+  buscar.placeholder = "Buscar película...";
+  mostrarDatos();
+});
 
-cargarPeliculas();
+btnLecturas.addEventListener("click", () => {
+  vistaActual = "lecturas";
+  btnLecturas.classList.add("activa");
+  btnPeliculas.classList.remove("activa");
+  buscar.placeholder = "Buscar libro...";
+  mostrarDatos();
+});
+
+buscar.addEventListener("input", mostrarDatos);
+
+cargarDatos();
