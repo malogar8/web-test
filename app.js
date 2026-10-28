@@ -130,7 +130,7 @@ function mostrarDatos() {
       const fechaLectura = escaparHTML(formatearFecha(item.fecha_lectura));
       tarjeta.innerHTML = `
         <h2>${titulo}${año ? ` (${año})` : ""}</h2>
-        ${autor ? `<p class="autor">Autor: ${autor}</p>` : ""}
+        ${autor ? `<p class="autor">${autor}</p>` : ""}
         ${fechaLectura ? `<div class="fecha">fecha reseña: ${fechaLectura}</div>` : ""}
         <p class="valoracion">${valoracion}</p>
       `;
