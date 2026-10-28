@@ -98,6 +98,10 @@ function mostrarDatos() {
   lista.innerHTML = "";
 
   filtradas.forEach(item => {
+    if (vistaActual === "lecturas") {
+      console.log("Objeto libro completo:", item);
+      console.log("Valor de autor_lectura:", item.autor_lectura);
+    }
     const titulo = escaparHTML(item.titulo || "");
     const año = escaparHTML(item.año || "");
     const valoracion = escaparHTML(item.valoracion || "");
