@@ -74,33 +74,48 @@ function mostrarDatos() {
 
   const filtradas = datos
     .filter(item => (item.titulo || "").toLocaleLowerCase().includes(termino))
-    .sort((a, b) => (b.fecha || "").localeCompare(a.fecha || ""));
+    .sort((a, b) => {
+      // Ordenar por fecha descendiente dependiendo de la pestaña
+      const fechaA = vistaActual === "peliculas" ? (a.fecha_vista || "") : (a.fecha_lectura || "");
+      const fechaB = vistaActual === "peliculas" ? (b.fecha_vista || "") : (b.fecha_lectura || "");
+      return fechaB.localeCompare(fechaA);
+    });
 
   lista.innerHTML = "";
 
   filtradas.forEach(item => {
     const titulo = escaparHTML(item.titulo || "");
+    const año = escaparHTML(item.año || "");
     const valoracion = escaparHTML(item.valoracion || "");
+    
     const tarjeta = document.createElement("article");
     tarjeta.className = "tarjeta";
 
     if (vistaActual === "peliculas") {
-      const año = escaparHTML(item.año_pelicula || "");
+      const fechaVista = escaparHTML(formatearFecha(item.fecha_vista));
       tarjeta.innerHTML = `
         <h2>${titulo}${año ? ` (${año})` : ""}</h2>
+        ${fechaVista ? `<div class="fecha">vista el: ${fechaVista}</div>` : ""}
         <p class="valoracion">${valoracion}</p>
       `;
     } else {
-      const autor = escaparHTML(item.autor || "");
+      const autor = escaparHTML(item.autor_lectura || "");
+      const fechaLectura = escaparHTML(formatearFecha(item.fecha_lectura));
       tarjeta.innerHTML = `
-        <h2>${titulo}</h2>
+        <h2>${titulo}${año ? ` (${año})` : ""}</h2>
         ${autor ? `<p class="autor">Autor: ${autor}</p>` : ""}
+        ${fechaLectura ? `<div class="fecha">leído el: ${fechaLectura}</div>` : ""}
         <p class="valoracion">${valoracion}</p>
       `;
     }
 
     lista.appendChild(tarjeta);
   });
+
+  const nombreEntidad = vistaActual === "peliculas" ? "película" : "libro";
+  contador.textContent = `${filtradas.length} ${nombreEntidad}${filtradas.length === 1 ? "" : "s"}`;
+  sinResultados.classList.toggle("oculto", filtradas.length !== 0);
+}
 
   const nombreEntidad = vistaActual === "peliculas" ? "película" : "libro";
   contador.textContent = `${filtradas.length} ${nombreEntidad}${filtradas.length === 1 ? "" : "s"}`;
