@@ -187,6 +187,6 @@ h1 {
 /* Estilo para el autor en las tarjetas de lectura */
 .autor {
   margin: 0 0 8px;
-  color: var(--texto-secundario);
-  font-size: 0.95rem;
+  color: var(--acento);
+  font-size: 1.2rem;
 }
