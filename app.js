@@ -87,9 +87,21 @@ function mostrarDatos() {
   const datos = vistaActual === "peliculas" ? peliculas : lecturas;
 
   const filtradas = datos
-    .filter(item => (item.titulo || "").toLocaleLowerCase().includes(termino))
+    .filter(item => {
+      const titulo = (item.titulo || "").toLocaleLowerCase();
+      const valoracion = (item.valoracion || "").toLocaleLowerCase();
+      const autor = (item.autor_lectura || "").toLocaleLowerCase();
+      const año = (item.año || "").toLocaleLowerCase();
+
+      // Comprueba si el término de búsqueda está en cualquiera de los campos
+      return (
+        titulo.includes(termino) ||
+        valoracion.includes(termino) ||
+        autor.includes(termino) ||
+        año.includes(termino)
+      );
+    })
     .sort((a, b) => {
-      // Ordenar por fecha descendiente dependiendo de la pestaña
       const fechaA = vistaActual === "peliculas" ? (a.fecha_vista || "") : (a.fecha_lectura || "");
       const fechaB = vistaActual === "peliculas" ? (b.fecha_vista || "") : (b.fecha_lectura || "");
       return fechaB.localeCompare(fechaA);
