@@ -113,7 +113,7 @@ function mostrarDatos() {
       const fechaVista = escaparHTML(formatearFecha(item.fecha_vista));
       tarjeta.innerHTML = `
         <h2>${titulo}${año ? ` (${año})` : ""}</h2>
-        ${fechaVista ? `<div class="fecha">vista el: ${fechaVista}</div>` : ""}
+        ${fechaVista ? `<div class="fecha">fecha reseña: ${fechaVista}</div>` : ""}
         <p class="valoracion">${valoracion}</p>
       `;
     } else {
@@ -121,8 +121,8 @@ function mostrarDatos() {
       const fechaLectura = escaparHTML(formatearFecha(item.fecha_lectura));
       tarjeta.innerHTML = `
         <h2>${titulo}${año ? ` (${año})` : ""}</h2>
-        ${autor ? `<p class="autor">Autor: ${autor}</p>` : ""}
-        ${fechaLectura ? `<div class="fecha">leído el: ${fechaLectura}</div>` : ""}
+        ${autor ? `<p class="autor">${autor}</p>` : ""}
+        ${fechaLectura ? `<div class="fecha">fecha reseña: ${fechaLectura}</div>` : ""}
         <p class="valoracion">${valoracion}</p>
       `;
     }
