@@ -148,3 +148,45 @@ h1 {
     background: var(--tarjeta);
   }
 }
+
+/* Estilos para la barra de navegación y las pestañas */
+.cabecera-principal {
+  margin-bottom: 24px;
+}
+
+.pestanas {
+  display: flex;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.btn-pestana {
+  padding: 8px 16px;
+  border: 1px solid var(--borde);
+  border-radius: 10px;
+  background: var(--tarjeta);
+  color: var(--texto-secundario);
+  font: inherit;
+  font-size: 0.95rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn-pestana:hover {
+  border-color: var(--acento);
+  color: var(--texto);
+}
+
+.btn-pestana.activa {
+  background: var(--acento);
+  border-color: var(--acento);
+  color: #ffffff;
+}
+
+/* Estilo para el autor en las tarjetas de lectura */
+.autor {
+  margin: 0 0 8px;
+  color: var(--texto-secundario);
+  font-size: 0.95rem;
+}
